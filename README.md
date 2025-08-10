@@ -326,7 +326,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- 📧 Email: your.email@example.com
+- 📧 Email: zainabhamid2468@gmail.com
 - 🐛 Issues: [GitHub Issues](https://github.com/zyna-b/Modern-Social-Media-Backend-API/issues)
 - 📖 Documentation: [API Docs](http://localhost:8000/docs)
 
