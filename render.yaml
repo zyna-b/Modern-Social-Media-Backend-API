@@ -1,0 +1,12 @@
+services:
+  # A web service
+  - type: web
+    name: social-media-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host=0.0.0.0 --port=$PORT
+
+databases:
+  # Create a PostgreSQL database
+  - name: social-media-db
+    plan: free

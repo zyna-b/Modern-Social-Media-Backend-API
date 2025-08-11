@@ -1,5 +1,6 @@
 # 🚀 SocialFeed API - Modern Social Media Backend
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/zyna-b/Modern-Social-Media-Backend-API)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-009688.svg?style=flat&logo=FastAPI)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776ab.svg?style=flat&logo=python)](https://www.python.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192.svg?style=flat&logo=postgresql)](https://www.postgresql.org)
@@ -220,15 +221,71 @@ isort app/
 
 ## 🚀 Deployment
 
+### Render Deployment
+
+This project is ready for deployment on [Render](https://render.com), which offers a free tier for hosting. The repository includes specific configuration files for Render deployment:
+
+- **render.yaml**: Defines services and databases
+- **build.sh**: Contains build commands and database migration instructions
+- **config.py**: Configured to work with Render's environment variables
+
+#### Steps to Deploy on Render
+
+1. **Push code to GitHub** (if you haven't already)
+
+2. **Sign up for Render**
+   - Go to [render.com](https://render.com) and sign up with your GitHub account
+
+3. **Create a new Web Service**
+   - From your Render dashboard, click "New +"
+   - Select "Web Service"
+   - Connect your GitHub repository
+   - Select the repository with your FastAPI app
+
+4. **Configure your web service**
+   - **Name**: Enter a name for your service (e.g., "social-media-api")
+   - **Environment**: Select "Python"
+   - **Region**: Choose a region close to your users
+   - **Branch**: Select your main branch (usually "main" or "master")
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+5. **Add environment variables**
+   - Click on "Advanced" and then "Add Environment Variable"
+   - Add these variables:
+     - `SECRET_KEY`: A secure random string
+     - `ALGORITHM`: HS256
+     - `ACCESS_TOKEN_EXPIRE_MINUTES`: 30
+
+6. **Add a PostgreSQL database**
+   - Go to your Render dashboard
+   - Click "New +"
+   - Select "PostgreSQL"
+   - Choose a name for your database
+   - Select the free plan
+   - After creating, note the "Internal Database URL"
+
+7. **Connect your web service to the database**
+   - Go back to your web service settings
+   - Add a new environment variable:
+     - `DATABASE_URL`: Paste the "Internal Database URL" from your database
+
+8. **Run migrations**
+   - After deployment, go to your web service dashboard
+   - Click on "Shell"
+   - Run: `alembic upgrade head`
+
+Your API will be available at `https://your-service-name.onrender.com`
+
 ### Production Considerations
 
 1. **Environment Variables**: Use production database credentials
 2. **CORS Configuration**: Restrict origins to your frontend domain
-3. **HTTPS**: Enable SSL/TLS in production
+3. **HTTPS**: Enable SSL/TLS in production (Render provides this automatically)
 4. **Rate Limiting**: Implement rate limiting for API endpoints
 5. **Monitoring**: Add logging and monitoring solutions
 
-### Docker Deployment
+### Docker Deployment (Alternative)
 
 ```dockerfile
 FROM python:3.9-slim

@@ -13,7 +13,7 @@ config = context.config
 
 # This override the sqlalchemy.url in alembic.ini 
 # We are not doing this in alembic.ini
-config.set_main_option("sqlalchemy.url", f'postgresql+psycopg2://{setting.database_username}:{setting.database_password}@{setting.database_hostname}:{setting.database_port}/{setting.database_name}')
+config.set_main_option("sqlalchemy.url", setting.get_database_url())
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
