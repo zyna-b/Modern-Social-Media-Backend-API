@@ -1,13 +1,13 @@
 # 🚀 SocialFeed API - Modern Social Media Backend
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/zyna-b/Modern-Social-Media-Backend-API)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?style=flat&logo=docker)](https://www.docker.com/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.116.1-009688.svg?style=flat&logo=FastAPI)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776ab.svg?style=flat&logo=python)](https://www.python.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192.svg?style=flat&logo=postgresql)](https://www.postgresql.org)
 [![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0.42-red.svg?style=flat)](https://www.sqlalchemy.org)
 [![Alembic](https://img.shields.io/badge/Alembic-1.16.4-orange.svg?style=flat)](https://alembic.sqlalchemy.org)
 
-A high-performance, production-ready social media backend API built with **FastAPI**, **PostgreSQL**, and **SQLAlchemy**. Features user authentication, post management, real-time voting system, and comprehensive API documentation.
+A high-performance, production-ready social media backend API built with **FastAPI**, **PostgreSQL**, and **SQLAlchemy**. This fully containerized solution features JWT authentication, post management with voting capabilities, and comprehensive API documentation - everything you need for a modern social platform backend.
 
 ## ✨ Key Features`
 
@@ -43,20 +43,48 @@ app/
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Using Docker (Recommended)
 
-- Python 3.9+
-- PostgreSQL 12+
-- Git
+#### Prerequisites
 
-### 1. Clone the Repository
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+#### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/zyna-b/Modern-Social-Media-Backend-API.git
 cd Modern-Social-Media-Backend-API
 ```
 
-### 2. Set Up Virtual Environment
+#### 2. Start the Application with Docker Compose
+
+```bash
+# Build and start containers
+docker-compose up
+
+# Or run in detached mode
+docker-compose up -d
+```
+
+The API will be available at `http://localhost:8000` with a fully configured PostgreSQL database.
+
+### Option 2: Traditional Setup
+
+#### Prerequisites
+
+- Python 3.9+
+- PostgreSQL 12+
+- Git
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/zyna-b/Modern-Social-Media-Backend-API.git
+cd Modern-Social-Media-Backend-API
+```
+
+#### 2. Set Up Virtual Environment
 
 ```bash
 # Windows
@@ -68,13 +96,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+#### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Environment Configuration
+#### 4. Environment Configuration
 
 Create a `.env` file in the root directory:
 
@@ -89,14 +117,14 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-### 5. Database Setup
+#### 5. Database Setup
 
 ```bash
 # Create database tables
 alembic upgrade head
 ```
 
-### 6. Run the Application
+#### 6. Run the Application
 
 ```bash
 uvicorn app.main:app --reload
@@ -219,17 +247,20 @@ black app/
 isort app/
 ```
 
-## 🚀 Deployment
+## 🚀 Deployment Options
 
-### Render Deployment
+### Future Deployment Plans
 
-This project is ready for deployment on [Render](https://render.com), which offers a free tier for hosting. The repository includes specific configuration files for Render deployment:
+This project is containerized with Docker and ready for deployment, but has not been deployed yet. The repository includes configuration files that could be used for various deployment options:
 
-- **render.yaml**: Defines services and databases
-- **build.sh**: Contains build commands and database migration instructions
-- **config.py**: Configured to work with Render's environment variables
+- **Dockerfile & docker-compose.yml**: For container-based deployment platforms
+- **render.yaml**: Template for potential Render deployment
+- **build.sh**: Example build commands for CI/CD pipelines
+- **config.py**: Configured to handle different environment variables
 
-#### Steps to Deploy on Render
+#### Potential Deployment on Render
+
+[Render](https://render.com) offers a free tier for hosting and would be suitable for this project when you're ready to deploy:
 
 1. **Push code to GitHub** (if you haven't already)
 
@@ -275,8 +306,6 @@ This project is ready for deployment on [Render](https://render.com), which offe
    - Click on "Shell"
    - Run: `alembic upgrade head`
 
-Your API will be available at `https://your-service-name.onrender.com`
-
 ### Production Considerations
 
 1. **Environment Variables**: Use production database credentials
@@ -285,19 +314,54 @@ Your API will be available at `https://your-service-name.onrender.com`
 4. **Rate Limiting**: Implement rate limiting for API endpoints
 5. **Monitoring**: Add logging and monitoring solutions
 
-### Docker Deployment (Alternative)
+### Docker Deployment
 
-```dockerfile
-FROM python:3.9-slim
+This project is fully containerized with Docker and Docker Compose, making it easy to deploy anywhere Docker is supported.
 
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+#### Docker Configuration
 
-COPY . .
+The project includes the following Docker-related files:
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+- **Dockerfile**: Defines how the FastAPI application is containerized
+- **docker-compose.yml**: Orchestrates the API and PostgreSQL services
+- **.dockerignore**: Excludes unnecessary files from the Docker build
+
+#### Running with Docker Compose
+
+```bash
+# Build and start all services
+docker-compose up
+
+# Run in detached mode (background)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Rebuild containers after changes
+docker-compose up --build
 ```
+
+#### Manual Docker Build
+
+```bash
+# Build the API image manually
+docker build -t socialfeed-api .
+
+# Run the container
+docker run -p 8000:8000 --env-file .env socialfeed-api
+```
+
+#### Docker Architecture
+
+The Docker setup consists of two services:
+1. **API Container**: FastAPI application with all dependencies
+2. **PostgreSQL Container**: Database service with persistent volume
+
+The services are networked together, and environment variables handle the configuration.
 
 ## 🧪 Testing
 
